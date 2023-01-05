@@ -75,8 +75,8 @@ const torDefaultRelays = {
 }
 
 export default function () {
-  const defaultRelays = isClientUsingTor() ? torDefaultRelays : mainnetDefaultRelays
-  const optionalRelaysList = isClientUsingTor() ? Object.keys(torDefaultRelays) : mainnetOptionalRelays
+  const defaultRelays = {...torDefaultRelays, ...mainnetDefaultRelays}
+  const optionalRelaysList = [...Object.keys(torDefaultRelays),  ...mainnetOptionalRelays]
 
   return {
     keys: LocalStorage.getItem('keys') || {}, // {priv, pub }
