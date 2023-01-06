@@ -1,7 +1,6 @@
 import {LocalStorage} from 'quasar'
 
 const isClientUsingTor = () => window.location.hostname.endsWith('.onion')
-
 const mainnetDefaultRelays = {
     'wss://nostr-pub.wellorder.net': {read: true, write: true},
     'wss://nostr.onsats.org': {read: true, write: true},
@@ -75,8 +74,8 @@ const torDefaultRelays = {
 }
 
 export default function () {
-  const defaultRelays = {...torDefaultRelays, ...mainnetDefaultRelays}
-  const optionalRelaysList = [...Object.keys(torDefaultRelays),  ...mainnetOptionalRelays]
+  const defaultRelays = isClientUsingTor() ? {...torDefaultRelays, ...mainnetDefaultRelays} : mainnetDefaultRelays
+  const optionalRelaysList = isClientUsingTor() ? [...Object.keys(torDefaultRelays), ...mainnetOptionalRelays] : mainnetOptionalRelays
 
   return {
     keys: LocalStorage.getItem('keys') || {}, // {priv, pub }
